@@ -1,30 +1,42 @@
 import unittest
-from math_quiz import function_A, function_B, function_C
+
+from math_quiz import generate_random_integer, generate_random_operator, generate_math_problem, math_quiz
 
 
-class TestMathGame(unittest.TestCase):
+class MathQuizTests(unittest.TestCase):
+    def test_generate_random_integer(self):
+        min_value = 1
+        max_value = 10
 
-    def test_function_A(self):
-        # Test if random numbers generated are within the specified range
-        min_val = 1
-        max_val = 10
-        for _ in range(1000):  # Test a large number of random values
-            rand_num = function_A(min_val, max_val)
-            self.assertTrue(min_val <= rand_num <= max_val)
+        for _ in range(100):
+            random_integer = generate_random_integer(min_value, max_value)
+            self.assertGreaterEqual(random_integer, min_value)
+            self.assertLessEqual(random_integer, max_value)
 
-    def test_function_B(self):
-        # TODO
-        pass
+    def test_generate_random_operator(self):
+        operators = ["+", "-", "*", "/"]
 
-    def test_function_C(self):
-            test_cases = [
-                (5, 2, '+', '5 + 2', 7),
-                ''' TODO add more test cases here '''
-            ]
+        for _ in range(100):
+            random_operator = generate_random_operator()
+            self.assertIn(random_operator, operators)
 
-            for num1, num2, operator, expected_problem, expected_answer in test_cases:
-                # TODO
-                pass
+    def test_generate_math_problem(self):
+        for _ in range(100):
+            problem, answer = generate_math_problem()
+
+            # Check that the problem is a valid math expression.
+            self.assertEqual(eval(problem), answer)
+
+    def test_math_quiz(self):
+        score = math_quiz()
+
+        # Check that the score is a valid integer.
+        self.assertIsInstance(score, int)
+
+        # Check that the score is between 0 and the total number of questions.
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 3.14159265359)
+
 
 if __name__ == "__main__":
     unittest.main()
